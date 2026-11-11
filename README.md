@@ -29,7 +29,7 @@ each with a progress bar, the percentage used and when it resets.
 
 **With a Herdr agent:** in any agent inside Herdr, ask:
 
-> Read ~/.config/herdr-app/AGENTS.md, then add this layout: herdr.dev/layouts/guilhermebussidias/claude-usage
+> Read ~/.config/herdr-app/AGENTS.md, then add this layout: herdr.dev/layouts/guilhermebussidias/herdr-claude-usage--claude-usage
 
 Then continue with
 step 2: the agent does not change your Claude Code settings.
