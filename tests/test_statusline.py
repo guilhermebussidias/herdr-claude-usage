@@ -24,6 +24,10 @@ class StatusLineTest(unittest.TestCase):
     def tearDown(self):
         self.home.cleanup()
 
+    def read_cache(self):
+        with open(self.cache) as f:
+            return f.read()
+
     def run_script(self, payload, *args):
         env = dict(os.environ, HOME=self.home.name, USERPROFILE=self.home.name)
         text = payload if isinstance(payload, str) else json.dumps(payload)
@@ -33,7 +37,7 @@ class StatusLineTest(unittest.TestCase):
         r = self.run_script(INPUT)
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertEqual(r.stdout, "")
-        saved = json.load(open(self.cache))
+        saved = json.loads(self.read_cache())
         self.assertEqual(saved["five_hour"], {"used_percentage": 17.4, "resets_at": 1794409200})
         self.assertEqual(saved["seven_day"]["used_percentage"], 18.0)
         self.assertIsInstance(saved["updated_at"], int)
@@ -42,15 +46,15 @@ class StatusLineTest(unittest.TestCase):
     def test_saves_only_rate_limits(self):
         payload = dict(INPUT, workspace={"current_dir": "/secret/project"}, session_id="abc", transcript_path="/x.jsonl")
         self.run_script(payload)
-        saved = json.load(open(self.cache))
+        saved = json.loads(self.read_cache())
         self.assertEqual(set(saved), {"five_hour", "seven_day", "updated_at", "tz_offset_min"})
 
     def test_keeps_last_cache_without_rate_limits(self):
         self.run_script(INPUT)
-        before = open(self.cache).read()
+        before = self.read_cache()
         r = self.run_script({"model": {"display_name": "Opus"}})
         self.assertEqual(r.returncode, 0)
-        self.assertEqual(open(self.cache).read(), before)
+        self.assertEqual(self.read_cache(), before)
 
     def test_no_cache_without_rate_limits(self):
         self.run_script({"rate_limits": {"five_hour": {"used_percentage": "bad"}}})
