@@ -1,9 +1,8 @@
 # Claude Usage
 
-Herdr's `main` layout with one more card on the right: **Claude Usage**, the
-person's Claude Code plan limits (current 5-hour session and weekly limit), each
-with a bar, the percentage used and when it resets. The card collapses to a
-thin strip that still shows both percentages.
+A collapsible sidebar for Herdr that shows your Claude Code plan limits: the
+current 5-hour session and the weekly limit, each with a bar, the percentage
+used and when it resets. Collapsed, it still shows both percentages.
 
 ![Claude Usage](preview.png)
 
